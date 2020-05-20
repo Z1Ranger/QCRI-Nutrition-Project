@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:speech_recognition/speech_recognition.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 
 List<String> entries = <String>[];
 List<String> uniqueEntries = <String>[];
@@ -21,6 +22,24 @@ class MainPage extends StatelessWidget {
 }
 
 class ProfilePage extends StatelessWidget {
+  _launchURL() async {
+    const url = 'https://siha.qcri.org/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchURL_mail(String toMailId, String subject, String body) async {
+    var url = 'mailto:$toMailId?subject=$subject&body=$body';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +74,7 @@ class ProfilePage extends StatelessWidget {
                   leading: Icon(Icons.info),
                   title: Text('About'),
                 ),
-                onPressed: () {},
+                onPressed: _launchURL,
               ),
             ),
             Card(
@@ -68,7 +87,10 @@ class ProfilePage extends StatelessWidget {
                   leading: Icon(Icons.mail),
                   title: Text('Ask a question'),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  _launchURL_mail('gvvarma2712@gmail.com', 'Flutter Email Test',
+                      'Hello Flutter');
+                },
               ),
             ),
           ],
@@ -283,7 +305,27 @@ class _FoodHistoryState extends State<FoodHistory> {
   }
 }
 
-class DiscoverPage extends StatelessWidget {
+class DiscoverPage extends StatefulWidget {
+  @override
+  _DiscoverPageState createState() => _DiscoverPageState();
+}
+
+class _DiscoverPageState extends State<DiscoverPage> {
+  bool _isLoading = true;
+  PDFDocument document;
+
+  @override
+  void initState() {
+    super.initState();
+    loadDocument();
+  }
+
+  loadDocument() async {
+    document = await PDFDocument.fromAsset('assets/guidelines.pdf');
+
+    setState(() => _isLoading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -296,12 +338,7 @@ class DiscoverPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-          },
-          child: Text('Go back!'),
-        ),
+        child: PDFViewer(document: document),
       ),
     );
   }
