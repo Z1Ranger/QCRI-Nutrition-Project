@@ -6,6 +6,8 @@ import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 
 List<String> entries = <String>[];
 List<String> uniqueEntries = <String>[];
+List<String> time = <String>[];
+List<String> uniqueTime = <String>[];
 
 void main() {
   runApp(MainPage());
@@ -118,6 +120,9 @@ class _FoodInputState extends State<FoodInput> {
 
   String resultText = "";
 
+  DateTime _dateTime = DateTime.now();
+  TimeOfDay _timeOfDay = TimeOfDay.now();
+
   @override
   void initState() {
     super.initState();
@@ -173,7 +178,52 @@ class _FoodInputState extends State<FoodInput> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Text(
+              DateTime(
+                _dateTime.year,
+                _dateTime.month,
+                _dateTime.day,
+                _timeOfDay.hour,
+                _timeOfDay.minute,
+              ).toString(),
+            ),
+            RaisedButton(
+              child: Text('Pick a Date and Time'),
+              onPressed: () {
+                showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay(minute: 0, hour: 0),
+                ).then(
+                  (time) {
+                    setState(
+                      () {
+                        if (time != null) {
+                          _timeOfDay = time;
+                        }
+                      },
+                    );
+                  },
+                );
+                showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                ).then(
+                  (date) {
+                    setState(
+                      () {
+                        if (date != null) {
+                          _dateTime = date;
+                        }
+                      },
+                    );
+                  },
+                );
+              },
+            ),
             ListTile(
               title: TextField(
                 controller: _textController,
@@ -187,8 +237,29 @@ class _FoodInputState extends State<FoodInput> {
                     () {
                       pressed = true;
                       entries.insert(0, _textController.text);
+                      time.insert(
+                        0,
+                        DateTime(
+                          _dateTime.year,
+                          _dateTime.month,
+                          _dateTime.day,
+                          _timeOfDay.hour,
+                          _timeOfDay.minute,
+                        ).toString(),
+                      );
                       if (!uniqueEntries.contains(_textController.text)) {
                         uniqueEntries.insert(0, _textController.text);
+                        uniqueTime.insert(
+                          0,
+                          DateTime(
+                                  _dateTime.year,
+                                  _dateTime.month,
+                                  _dateTime.day,
+                                  _timeOfDay.hour,
+                                  _timeOfDay.minute)
+                              .toString(),
+                        );
+//                      _dateTime.toString()
                       }
                     },
                   );
@@ -200,13 +271,22 @@ class _FoodInputState extends State<FoodInput> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             ListTile(
               title: pressed ? Text(_textController.text) : SizedBox(),
             ),
+            ListTile(
+              title: pressed
+                  ? Text(
+                      DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
+                              _timeOfDay.hour, _timeOfDay.minute)
+                          .toString(),
+                    )
+                  : SizedBox(),
+            ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Container(
 //              mainAxisAlignment: MainAxisAlignment.center,
@@ -280,10 +360,9 @@ class _FoodHistoryState extends State<FoodHistory> {
         padding: const EdgeInsets.all(8),
         itemCount: uniqueEntries.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 50,
-            color: Colors.blue,
-            child: FlatButton(
+          return ListTile(
+            title: FlatButton(
+              color: Colors.blue[200],
               onPressed: () {
                 Navigator.push(
                   context,
@@ -295,8 +374,14 @@ class _FoodHistoryState extends State<FoodHistory> {
                 );
               },
               child: Center(
-                child: Text(uniqueEntries[index]),
+                child: Text(
+                  uniqueEntries[index],
+                ),
               ),
+            ),
+            subtitle: Container(
+              child: Text(uniqueTime[index]),
+              color: Colors.blue[300],
             ),
           );
         },
