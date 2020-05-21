@@ -25,6 +25,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  http: ^0.12.1
+
   flutter_plugin_pdf_viewer: ^1.0.7
 
   speech_recognition: "^0.3.0"
