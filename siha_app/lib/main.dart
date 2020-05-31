@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_recognition/speech_recognition.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:convert';
+import 'home.dart';
 
 List<String> entries = <String>[];
 List<String> uniqueEntries = <String>[];
@@ -30,85 +28,6 @@ class MainPage extends StatelessWidget {
     return MaterialApp(
       title: 'SIHA - System for Integrated Health Analytics',
       home: Home(),
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  _launchURL() async {
-    const url = 'https://siha.qcri.org/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchURL_mail(String toMailId, String subject, String body) async {
-    var url = 'mailto:$toMailId?subject=$subject&body=$body';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[900],
-        title: Image.asset(
-          'images/logo.PNG',
-          fit: BoxFit.cover,
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 30,
-              width: double.infinity,
-            ),
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('images/user.png'),
-            ),
-            Text(
-              'First Name',
-              style: TextStyle(
-                  fontFamily: 'San', fontSize: 20, color: Colors.blue[900]),
-            ),
-            Card(
-              margin: EdgeInsets.fromLTRB(40, 60, 40, 10),
-              child: RaisedButton(
-                child: ListTile(
-                  leading: Icon(Icons.info),
-                  title: Text('About'),
-                ),
-                onPressed: _launchURL,
-              ),
-            ),
-            Card(
-              margin: EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 40,
-              ),
-              child: RaisedButton(
-                child: ListTile(
-                  leading: Icon(Icons.mail),
-                  title: Text('Ask a question'),
-                ),
-                onPressed: () {
-                  _launchURL_mail('gvvarma2712@gmail.com', 'Flutter Email Test',
-                      'Hello Flutter');
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -219,9 +138,13 @@ class _FoodInputState extends State<FoodInput> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
-        title: Image.asset(
-          'images/logo.PNG',
-          fit: BoxFit.cover,
+        title: FlatButton(
+          child: Image.asset(
+            'images/logo.jpg',
+            height: 100,
+            width: 100,
+          ),
+          onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
       ),
@@ -459,188 +382,6 @@ class _FoodInputState extends State<FoodInput> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class FoodHistory extends StatefulWidget {
-  @override
-  _FoodHistoryState createState() => _FoodHistoryState();
-}
-
-class _FoodHistoryState extends State<FoodHistory> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[900],
-        title: Image.asset(
-          'images/logo.PNG',
-          fit: BoxFit.cover,
-        ),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: uniqueEntries.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: FlatButton(
-              color: Colors.blue[300],
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FoodInput(
-                      uniqueEntries[index],
-                    ),
-                  ),
-                );
-              },
-              child: Center(
-                child: Text(
-                  uniqueEntries[index],
-                ),
-              ),
-            ),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    child: Text(uniqueTime[index]),
-                    color: Colors.blue[200],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Text(uniqueMealTime[index]),
-                    color: Colors.blue[100],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class DiscoverPage extends StatefulWidget {
-  @override
-  _DiscoverPageState createState() => _DiscoverPageState();
-}
-
-class _DiscoverPageState extends State<DiscoverPage> {
-  bool _isLoading = true;
-  PDFDocument document;
-
-  @override
-  void initState() {
-    super.initState();
-    loadDocument();
-  }
-
-  loadDocument() async {
-    document = await PDFDocument.fromAsset('assets/guidelines.pdf');
-
-    setState(() => _isLoading = false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[900],
-        title: Image.asset(
-          'images/logo.PNG',
-          fit: BoxFit.cover,
-        ),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: PDFViewer(document: document),
-      ),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[900],
-        title: Image.asset(
-          'images/logo.PNG',
-          fit: BoxFit.cover,
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          // action button
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => (FoodInput())),
-          );
-        },
-        tooltip: 'Add food eaten for the day',
-        child: Icon(
-          Icons.add,
-        ),
-        backgroundColor: Colors.blue[400],
-        elevation: 3.0,
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.room_service,
-                size: 30,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FoodHistory()),
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.explore,
-                size: 30,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DiscoverPage()),
-                );
-              },
-            ),
-          ],
-        ),
-        shape: CircularNotchedRectangle(),
-        color: Colors.blue[900],
       ),
     );
   }
