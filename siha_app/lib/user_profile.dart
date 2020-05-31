@@ -52,8 +52,8 @@ class ProfilePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: kMainThemeColor,
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(400),
-                    bottomRight: Radius.circular(400),
+                    bottomLeft: Radius.circular(75),
+                    bottomRight: Radius.circular(75),
                   ),
                 ),
                 child: Column(

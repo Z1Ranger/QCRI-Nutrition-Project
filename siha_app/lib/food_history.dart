@@ -27,39 +27,62 @@ class _FoodHistoryState extends State<FoodHistory> {
         padding: const EdgeInsets.all(8),
         itemCount: uniqueEntries.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: FlatButton(
-              color: Colors.blue[300],
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FoodInput(
+          return Container(
+            margin: EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Color(0xFF773A87),
+                    Color(0xFFC92B5F),
+                    Colors.pinkAccent,
+                  ]),
+            ),
+            child: Column(
+              children: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FoodInput(
+                          uniqueEntries[index],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Center(
+                    child: Text(
                       uniqueEntries[index],
+                      style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ),
-                );
-              },
-              child: Center(
-                child: Text(
-                  uniqueEntries[index],
                 ),
-              ),
-            ),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    child: Text(uniqueTime[index]),
-                    color: Colors.blue[200],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Text(uniqueMealTime[index]),
-                    color: Colors.blue[100],
-                  ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          uniqueTime[index],
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          uniqueMealTime[index],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

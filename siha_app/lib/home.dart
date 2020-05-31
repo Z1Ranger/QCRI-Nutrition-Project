@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'discover_page.dart';
 import 'user_profile.dart';
@@ -5,10 +6,36 @@ import 'food_history.dart';
 import 'main.dart';
 import 'constants.dart';
 
+List<String> weekdays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+];
+
+List<String> months = [
+  'January',
+  'February ',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlue[100],
       appBar: AppBar(
         backgroundColor: kMainThemeColor,
         title: Image.asset(
@@ -86,6 +113,87 @@ class Home extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            color: Colors.blue[900],
+            height: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.chevron_left,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Icon(
+                  Icons.calendar_today,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  '${weekdays[DateTime.now().weekday % 7]}, ${DateTime.now().day} ${months[DateTime.now().month - 1]}',
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 10, left: 50, right: 50),
+            color: Colors.white,
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '0',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
+                  Icon(
+                    Icons.whatshot,
+                    size: 30,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'images/wheel.PNG',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(300),
+                bottomRight: Radius.circular(300),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

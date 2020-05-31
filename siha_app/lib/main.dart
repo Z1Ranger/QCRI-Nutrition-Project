@@ -161,7 +161,7 @@ class _FoodInputState extends State<FoodInput> {
                   _dateTime.day,
                   _timeOfDay.hour,
                   _timeOfDay.minute,
-                ).toString(),
+                ).toString().split('.')[0],
               ),
               RaisedButton(
                 child: Text('Pick a Date and Time'),
