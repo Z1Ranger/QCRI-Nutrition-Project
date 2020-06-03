@@ -31,6 +31,8 @@ List<String> months = [
   'December'
 ];
 
+bool experiencedUser = false;
+
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -192,7 +194,32 @@ class Home extends StatelessWidget {
                 bottomRight: Radius.circular(300),
               ),
             ),
-          )
+          ),
+          ListView(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            children: <Widget>[
+              !experiencedUser
+                  ? Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      margin: EdgeInsets.fromLTRB(40, 20, 40, 20),
+                      child: FlatButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Get Started'),
+                            Icon(Icons.arrow_right)
+                          ],
+                        ),
+                        onPressed: () => experiencedUser = true,
+                      ),
+                    )
+                  : SizedBox(),
+            ],
+          ),
         ],
       ),
     );
