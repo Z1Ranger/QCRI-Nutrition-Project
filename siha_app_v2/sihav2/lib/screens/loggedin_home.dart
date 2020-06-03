@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:org/constants.dart';
+import 'package:org/screens/food_logging_overview.dart';
 import 'package:org/widgets/functionality_widget.dart';
 import 'package:org/screens/user_page.dart';
 
@@ -37,7 +38,11 @@ class LoggedInHome extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15), color: kMainTheme),
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FoodLoggingOverview()),
+                ),
                 child: FunctionalityWidget(
                   image: 'images/calorie.png',
                   text: 'LOG FOOD  & MONITOR CALORIES',

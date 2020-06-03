@@ -8,3 +8,28 @@ const kDimPink = Color(0x50ECACAC);
 const String kAppBarLogo = 'images/logo.jpg';
 
 const kEmail = '';
+
+const List<String> weekdays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday'
+];
+
+const List<String> months = [
+  'January',
+  'February ',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
