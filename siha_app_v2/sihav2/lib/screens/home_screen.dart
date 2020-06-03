@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:org/screens/login_screen.dart';
 import 'package:org/widgets/functionality_widget.dart';
 import 'package:org/widgets/login_button.dart';
 import 'package:org/constants.dart';
@@ -36,7 +37,13 @@ class HomeScreen extends StatelessWidget {
               text: 'MONITOR ALL ACTIVITY DEVICES IN ONE PLACE',
             ),
             Expanded(
-              child: LoginButton(),
+              child: GestureDetector(
+                child: LoginButton(),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                ),
+              ),
             ),
           ],
         ),
