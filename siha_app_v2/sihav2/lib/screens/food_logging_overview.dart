@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:org/screens/meal_log.dart';
 import 'user_page.dart';
 import 'package:org/constants.dart';
 import 'package:org/widgets/circular_nutritional_indicator.dart';
@@ -41,7 +42,10 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MealLog()),
+        ),
         tooltip: 'Add food eaten for the day',
         child: Icon(
           Icons.add,
