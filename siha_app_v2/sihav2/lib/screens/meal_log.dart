@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:org/constants.dart';
+import 'package:org/screens/food_log.dart';
 
 class MealLog extends StatefulWidget {
   @override
@@ -64,7 +65,10 @@ class _MealLogState extends State<MealLog> {
             ),
             margin: EdgeInsets.symmetric(vertical: 20),
             child: FlatButton(
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FoodLog()),
+              ),
               child: Text(
                 'NEXT',
                 style: TextStyle(color: Colors.white),
