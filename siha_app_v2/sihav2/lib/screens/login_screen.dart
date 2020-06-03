@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:org/screens/loggedin_home.dart';
 import 'package:org/widgets/login_button.dart';
 import 'package:org/constants.dart';
 
@@ -60,7 +61,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     autofocus: false,
                   )),
             ),
-            LoginButton()
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 15),
+                child: GestureDetector(
+                  child: LoginButton(),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoggedInHome()),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
