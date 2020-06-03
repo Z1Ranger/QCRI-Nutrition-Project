@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             Container(
               height: 150,
-              margin: EdgeInsets.symmetric(horizontal: 60, vertical: 50),
+              margin: EdgeInsets.symmetric(horizontal: 60, vertical: 40),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,

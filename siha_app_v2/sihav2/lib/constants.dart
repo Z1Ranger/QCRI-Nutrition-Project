@@ -6,3 +6,5 @@ const kDimText = Color(0xffBEDAFF);
 const kDimPink = Color(0x50ECACAC);
 
 const String kAppBarLogo = 'images/logo.jpg';
+
+const kEmail = '';

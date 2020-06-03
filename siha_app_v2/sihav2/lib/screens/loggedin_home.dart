@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:org/constants.dart';
 import 'package:org/widgets/functionality_widget.dart';
+import 'package:org/screens/user_page.dart';
 
 class LoggedInHome extends StatelessWidget {
   @override
@@ -20,7 +21,10 @@ class LoggedInHome extends StatelessWidget {
             padding: const EdgeInsets.only(right: 5),
             child: IconButton(
               icon: Icon(Icons.account_circle),
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserPage()),
+              ),
             ),
           ),
         ],
