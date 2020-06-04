@@ -4,6 +4,7 @@ import 'package:org/screens/meal_log.dart';
 import 'user_page.dart';
 import 'package:org/constants.dart';
 import 'package:org/widgets/circular_nutritional_indicator.dart';
+import 'discover.dart';
 
 bool experiencedUser = false;
 
@@ -82,10 +83,10 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-//                  Navigator.push(
-//                    context,
-//                    MaterialPageRoute(builder: (context) => DiscoverPage()),
-//                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DiscoverPage()),
+                  );
                 },
               ),
             ],
@@ -212,15 +213,23 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                       ),
                       margin: EdgeInsets.fromLTRB(40, 20, 40, 20),
                       child: FlatButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Get Started'),
-                            Icon(Icons.arrow_right)
-                          ],
-                        ),
-                        onPressed: () => experiencedUser = true,
-                      ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('Get Started'),
+                              Icon(Icons.arrow_right)
+                            ],
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              experiencedUser = true;
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MealLog(),
+                                ));
+                          }),
                     )
                   : SizedBox(),
             ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:org/constants.dart';
+import 'package:org/screens/coming_soon.dart';
+import 'package:org/screens/discover.dart';
 import 'package:org/screens/food_logging_overview.dart';
 import 'package:org/widgets/functionality_widget.dart';
 import 'package:org/screens/user_page.dart';
@@ -56,7 +58,10 @@ class LoggedInHome extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15), color: kMainTheme),
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DiscoverPage()),
+                ),
                 child: FunctionalityWidget(
                   image: 'images/health.png',
                   text: 'GET LIFESTYLE RECOMMENDATIONS',
@@ -70,7 +75,10 @@ class LoggedInHome extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15), color: kMainTheme),
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ComingSoon()),
+                ),
                 child: FunctionalityWidget(
                   image: 'images/watch.png',
                   text: 'MONITOR ALL ACTIVITY DEVICES IN ONE PLACE',
