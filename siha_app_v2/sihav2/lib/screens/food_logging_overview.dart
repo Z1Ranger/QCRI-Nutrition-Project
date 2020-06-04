@@ -14,6 +14,8 @@ class FoodLoggingOverview extends StatefulWidget {
 }
 
 class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
+  DateTime _dateTime = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +119,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                   width: 10,
                 ),
                 Text(
-                  '${weekdays[DateTime.now().weekday % 7]}, ${DateTime.now().day} ${months[DateTime.now().month - 1]}',
+                  '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
                   style: TextStyle(color: kMainTheme),
                 ),
                 SizedBox(

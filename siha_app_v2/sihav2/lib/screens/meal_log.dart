@@ -10,6 +10,27 @@ class MealLog extends StatefulWidget {
 }
 
 class _MealLogState extends State<MealLog> {
+  TimeOfDay _timeOfDay = TimeOfDay.now();
+  Meal selectedMeal;
+
+  void setMeal() {
+    if (5 < _timeOfDay.hour && _timeOfDay.hour < 11) {
+      selectedMeal = Meal.breakfast;
+    } else if (12 < _timeOfDay.hour && _timeOfDay.hour < 15) {
+      selectedMeal = Meal.lunch;
+    } else if (18 < _timeOfDay.hour && _timeOfDay.hour < 21) {
+      selectedMeal = Meal.dinner;
+    } else {
+      selectedMeal = Meal.snack;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setMeal();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,26 +57,85 @@ class _MealLogState extends State<MealLog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              MealWidget(
-                meal: 'BREAKFAST',
-                image: 'images/breakfast.png',
+              Container(
+                margin: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: selectedMeal == Meal.breakfast
+                      ? kDimPink
+                      : Colors.white10,
+                ),
+                child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedMeal = Meal.breakfast;
+                    });
+                  },
+                  child: MealWidget(
+                    meal: 'BREAKFAST',
+                    image: 'images/breakfast.png',
+                  ),
+                ),
               ),
-              MealWidget(
-                meal: 'LUNCH',
-                image: 'images/lunch.png',
+              Container(
+                margin: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: selectedMeal == Meal.lunch ? kDimPink : Colors.white10,
+                ),
+                child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedMeal = Meal.lunch;
+                    });
+                  },
+                  child: MealWidget(
+                    meal: 'LUNCH',
+                    image: 'images/lunch.png',
+                  ),
+                ),
               )
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              MealWidget(
-                meal: 'DINNER',
-                image: 'images/dinner.png',
+              Container(
+                margin: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color:
+                      selectedMeal == Meal.dinner ? kDimPink : Colors.white10,
+                ),
+                child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedMeal = Meal.dinner;
+                    });
+                  },
+                  child: MealWidget(
+                    meal: 'DINNER',
+                    image: 'images/dinner.png',
+                  ),
+                ),
               ),
-              MealWidget(
-                meal: 'SNACK',
-                image: 'images/snack.png',
+              Container(
+                margin: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: selectedMeal == Meal.snack ? kDimPink : Colors.white10,
+                ),
+                child: FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedMeal = Meal.snack;
+                    });
+                  },
+                  child: MealWidget(
+                    meal: 'SNACK',
+                    image: 'images/snack.png',
+                  ),
+                ),
               )
             ],
           ),

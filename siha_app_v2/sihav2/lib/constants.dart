@@ -33,3 +33,5 @@ const List<String> months = [
   'November',
   'December'
 ];
+
+enum Meal { breakfast, lunch, dinner, snack }
