@@ -7,6 +7,7 @@ import 'package:org/widgets/circular_nutritional_indicator.dart';
 import 'discover.dart';
 
 bool experiencedUser = false;
+DateTime _dateTime = DateTime.now();
 
 class FoodLoggingOverview extends StatefulWidget {
   @override
@@ -14,8 +15,6 @@ class FoodLoggingOverview extends StatefulWidget {
 }
 
 class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
-  DateTime _dateTime = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,30 +103,68 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  Icons.chevron_left,
-                  color: kMainTheme,
+                GestureDetector(
+                  child: Icon(
+                    Icons.chevron_left,
+                    color: kMainTheme,
+                  ),
+                  onTap: () {
+                    setState(() {
+                      _dateTime = _dateTime.subtract(Duration(days: 1));
+                    });
+                  },
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                Icon(
-                  Icons.calendar_today,
-                  color: kMainTheme,
+                GestureDetector(
+                  onTap: () {
+                    showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2020),
+                      lastDate: DateTime(2100),
+                    ).then(
+                      (date) {
+                        setState(
+                          () {
+                            if (date != null) {
+                              _dateTime = date;
+                            }
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.calendar_today,
+                        color: kMainTheme,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
+                        style: TextStyle(color: kMainTheme),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                Text(
-                  '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
-                  style: TextStyle(color: kMainTheme),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(
-                  Icons.chevron_right,
-                  color: kMainTheme,
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _dateTime = _dateTime.add(Duration(days: 1));
+                    });
+                  },
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: kMainTheme,
+                  ),
                 ),
               ],
             ),
