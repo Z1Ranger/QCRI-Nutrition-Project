@@ -15,6 +15,16 @@ class FoodLoggingOverview extends StatefulWidget {
 }
 
 class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
+  bool checkToday(DateTime date) {
+    if (date.year == DateTime.now().year &&
+        date.month == DateTime.now().month &&
+        date.day == DateTime.now().day) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +131,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                   onTap: () {
                     showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: _dateTime,
                       firstDate: DateTime(2020),
                       lastDate: DateTime(2100),
                     ).then(
@@ -145,10 +155,15 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
-                        style: TextStyle(color: kMainTheme),
-                      ),
+                      checkToday(_dateTime)
+                          ? Text(
+                              'Today',
+                              style: TextStyle(color: kMainTheme),
+                            )
+                          : Text(
+                              '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
+                              style: TextStyle(color: kMainTheme),
+                            ),
                     ],
                   ),
                 ),

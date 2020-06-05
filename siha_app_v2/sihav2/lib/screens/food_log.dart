@@ -9,6 +9,17 @@ class FoodLog extends StatefulWidget {
 
 class _FoodLogState extends State<FoodLog> {
   DateTime _dateTime = DateTime.now();
+  String foodEaten;
+
+  bool checkToday(DateTime date) {
+    if (date.year == DateTime.now().year &&
+        date.month == DateTime.now().month &&
+        date.day == DateTime.now().day) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,7 @@ class _FoodLogState extends State<FoodLog> {
                   onTap: () {
                     showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: _dateTime,
                       firstDate: DateTime(2020),
                       lastDate: DateTime(2100),
                     ).then(
@@ -72,10 +83,15 @@ class _FoodLogState extends State<FoodLog> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
-                        style: TextStyle(color: kMainTheme),
-                      ),
+                      checkToday(_dateTime)
+                          ? Text(
+                              'Today',
+                              style: TextStyle(color: kMainTheme),
+                            )
+                          : Text(
+                              '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
+                              style: TextStyle(color: kMainTheme),
+                            ),
                     ],
                   ),
                 ),
@@ -96,6 +112,10 @@ class _FoodLogState extends State<FoodLog> {
               ],
             ),
           ),
+//          Container(
+//            color: Colors.white,
+//            height: 50,
+//          ),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,6 +136,9 @@ class _FoodLogState extends State<FoodLog> {
                       child: Container(
                         padding: EdgeInsets.only(left: 20),
                         child: TextField(
+                          onChanged: (value) {
+                            foodEaten = value;
+                          },
                           decoration: InputDecoration(
                             fillColor: kDimText,
                             filled: true,
@@ -142,7 +165,8 @@ class _FoodLogState extends State<FoodLog> {
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NutritionAnalysisPage()),
+                          builder: (context) =>
+                              NutritionAnalysisPage(foodEaten)),
                     ),
                     child: Text(
                       'NEXT',
