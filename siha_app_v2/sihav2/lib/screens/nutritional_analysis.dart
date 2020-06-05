@@ -3,6 +3,7 @@ import 'package:org/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:org/keys.dart';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:org/screens/food_logging_overview.dart';
 
@@ -20,26 +21,19 @@ class NutritionAnalysisPage extends StatefulWidget {
 
 class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
   bool isLoading = true;
+  dynamic data;
 
   getData() async {
     foodPhotos = [];
     foodNames = [];
     http.Response response = await http.post(
-      Uri.encodeFull('https://trackapi.nutritionix.com/v2/natural/nutrients'),
-      headers: {
-        'x-app-id': nutrition_app_id,
-        'x-app-key': nutrition_app_key,
-        'x-remote-user-id': '0'
-      },
-      body: {'query': '${widget.foodEaten}'},
+      Uri.encodeFull('http://z1ranger.pythonanywhere.com/food'),
+      body: jsonEncode({'food': '${widget.foodEaten}'}),
+      headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
-      dynamic data = jsonDecode(response.body);
+      data = jsonDecode(response.body);
 
-      for (int i = 0; i < data['foods'].length; i++) {
-        foodPhotos.add(data['foods'][i]['photo']['thumb']);
-        foodNames.add(data['foods'][i]['food_name']);
-      }
       setState(() {
         isLoading = false;
       });
@@ -98,21 +92,23 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
-                      itemCount: foodNames.length,
+                      itemCount: data['foods'].length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
                           child: Row(
-//                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Image.network(
-                                foodPhotos[index],
+                                data['foods'][index]['img'],
                                 width: 50,
                                 height: 50,
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(foodNames[index]),
+                              Text(data['foods'][index]['food'].toString()),
+                              Text(data['foods'][index]['qty'].toString()),
+                              Text(data['foods'][index]['cals'].toString()),
+                              Text(data['foods'][index]['carbs'].toString()),
+                              Text(data['foods'][index]['proteins'].toString()),
+                              Text(data['foods'][index]['fats'].toString()),
                             ],
                           ),
                           margin: EdgeInsets.only(
