@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:org/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:org/keys.dart';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:org/screens/food_logging_overview.dart';
-
-List foodPhotos;
-List foodNames;
 
 class NutritionAnalysisPage extends StatefulWidget {
   final foodEaten;
@@ -24,13 +19,13 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
   dynamic data;
 
   getData() async {
-    foodPhotos = [];
-    foodNames = [];
+    print('hi');
     http.Response response = await http.post(
       Uri.encodeFull('http://z1ranger.pythonanywhere.com/food'),
       body: jsonEncode({'food': '${widget.foodEaten}'}),
       headers: {'Content-Type': 'application/json'},
     );
+    print('hi');
     if (response.statusCode == 200) {
       data = jsonDecode(response.body);
 
@@ -45,8 +40,8 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
 
   @override
   void initState() {
-    super.initState();
     getData();
+    super.initState();
   }
 
   @override
