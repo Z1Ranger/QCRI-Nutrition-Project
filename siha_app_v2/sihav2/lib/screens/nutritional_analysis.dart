@@ -7,8 +7,9 @@ import 'package:org/screens/food_logging_overview.dart';
 
 class NutritionAnalysisPage extends StatefulWidget {
   final foodEaten;
+  final date;
 
-  NutritionAnalysisPage([this.foodEaten]);
+  NutritionAnalysisPage([this.foodEaten, this.date]);
 
   @override
   _NutritionAnalysisPageState createState() => _NutritionAnalysisPageState();
@@ -19,20 +20,42 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
   dynamic data;
 
   getData() async {
-    print('hi');
-    http.Response response = await http.post(
-      Uri.encodeFull('http://z1ranger.pythonanywhere.com/food'),
-      body: jsonEncode({'food': '${widget.foodEaten}'}),
-      headers: {'Content-Type': 'application/json'},
+    http.Response response = await http.get(
+      Uri.encodeFull(
+          'https://siha-staging.qcri.org/siha-api/v1/food_to_nutrients/${widget.foodEaten}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjI4OTEzMCwiZXhwIjoxNTkyODkzOTMwfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.Lisr-OYxbr8o71sIHPZkRyD_yRTqV5it0j0uy2KOJ6Pl-74Wircy0k56ciundmFjff9YVQQMiUgxvdC8N0OLow'
+      },
     );
-    print('hi');
     if (response.statusCode == 200) {
       data = jsonDecode(response.body);
+      print(data);
 
       setState(() {
         isLoading = false;
       });
       return 'success - showing food';
+    } else {
+      print(response.statusCode);
+    }
+  }
+
+  setData() async {
+    http.Response response = await http.post(
+      Uri.encodeFull('http://z1ranger.pythonanywhere.com/food'),
+      body: jsonEncode({
+        'date': '${widget.date}',
+        'tot_cals': '${data['tot_cals']}',
+        'tot_fats': '${data['tot_fats']}',
+        'tot_proteins': '${data['tot_proteins']}',
+        'tot_cabs': '${data['tot_cabs']}'
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return 'success - sending food';
     } else {
       print(response.statusCode);
     }
@@ -57,7 +80,7 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
           centerTitle: true,
         ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+//          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
               padding: EdgeInsets.all(20),
@@ -100,10 +123,14 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
                               ),
                               Text(data['foods'][index]['food'].toString()),
                               Text(data['foods'][index]['qty'].toString()),
-                              Text(data['foods'][index]['cals'].toString()),
-                              Text(data['foods'][index]['carbs'].toString()),
-                              Text(data['foods'][index]['proteins'].toString()),
-                              Text(data['foods'][index]['fats'].toString()),
+                              Text(data['foods'][index]['nutrients']['cals']
+                                  .toString()),
+                              Text(data['foods'][index]['nutrients']['carbs']
+                                  .toString()),
+                              Text(data['foods'][index]['nutrients']['proteins']
+                                  .toString()),
+                              Text(data['foods'][index]['nutrients']['fats']
+                                  .toString()),
                             ],
                           ),
                           margin: EdgeInsets.only(
@@ -116,7 +143,10 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
                       },
                     ),
                   )
-                : SizedBox(),
+                : Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: CircularProgressIndicator(),
+                  ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -124,11 +154,14 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
               ),
               margin: EdgeInsets.symmetric(vertical: 20, horizontal: 35),
               child: FlatButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FoodLoggingOverview()),
-                ),
+                onPressed: () {
+                  setData();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FoodLoggingOverview()),
+                  );
+                },
                 child: Text(
                   'SUBMIT',
                   style: TextStyle(color: Colors.white),

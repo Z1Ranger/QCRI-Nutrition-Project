@@ -165,8 +165,8 @@ class _FoodLogState extends State<FoodLog> {
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              NutritionAnalysisPage(foodEaten)),
+                          builder: (context) => NutritionAnalysisPage(
+                              foodEaten, _dateTime.toString())),
                     ),
                     child: Text(
                       'NEXT',
