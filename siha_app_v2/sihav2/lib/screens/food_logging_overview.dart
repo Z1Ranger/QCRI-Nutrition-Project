@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:org/screens/meal_log.dart';
 import 'user_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:org/constants.dart';
 import 'package:org/widgets/circular_nutritional_indicator.dart';
 import 'discover.dart';
@@ -15,6 +17,13 @@ class FoodLoggingOverview extends StatefulWidget {
 }
 
 class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
+  int cals = 0;
+  int carbs = 0;
+  int fats = 0;
+  int proteins = 0;
+
+  bool _isLoading = true;
+
   bool checkToday(DateTime date) {
     if (date.year == DateTime.now().year &&
         date.month == DateTime.now().month &&
@@ -23,6 +32,43 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
     } else {
       return false;
     }
+  }
+
+  getData() async {
+    String date = _dateTime.year.toString() +
+        '-' +
+        _dateTime.month.toString() +
+        '-' +
+        _dateTime.day.toString();
+    print(date);
+    http.Response response = await http.get(
+      Uri.encodeFull(
+          'https://siha-staging.qcri.org/siha-api/v1/nutrients/$date/1'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
+      },
+    );
+    if (response.statusCode == 200) {
+      dynamic data = jsonDecode(response.body);
+      print(data);
+      carbs = data["total_carbs"];
+      cals = data["total_cals"];
+      fats = data["total_fats"];
+      proteins = data["total_proteins"];
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      print(response.statusCode);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+//    getData();
   }
 
   @override
@@ -121,6 +167,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                   onTap: () {
                     setState(() {
                       _dateTime = _dateTime.subtract(Duration(days: 1));
+                      getData();
                     });
                   },
                 ),
@@ -140,6 +187,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                           () {
                             if (date != null) {
                               _dateTime = date;
+                              getData();
                             }
                           },
                         );
@@ -174,6 +222,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                   onTap: () {
                     setState(() {
                       _dateTime = _dateTime.add(Duration(days: 1));
+                      getData();
                     });
                   },
                   child: Icon(
@@ -202,10 +251,15 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '0',
-                      style: TextStyle(fontSize: 30),
-                    ),
+                    child: _isLoading
+                        ? Text(
+                            "0",
+                            style: TextStyle(fontSize: 30),
+                          )
+                        : Text(
+                            cals.toString(),
+                            style: TextStyle(fontSize: 30),
+                          ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
@@ -236,14 +290,17 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                 CircularNutritionIndicator(
                   color: Colors.green,
                   nutrition: 'FATS',
+                  text: _isLoading ? "0" : fats.toString(),
                 ),
                 CircularNutritionIndicator(
                   color: Colors.blue,
                   nutrition: 'PROTEINS',
+                  text: _isLoading ? "0" : proteins.toString(),
                 ),
                 CircularNutritionIndicator(
                   color: Colors.red,
                   nutrition: 'CARBS',
+                  text: _isLoading ? "0" : carbs.toString(),
                 ),
               ],
             ),

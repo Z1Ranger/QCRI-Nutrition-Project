@@ -3,6 +3,10 @@ import 'package:org/constants.dart';
 import 'package:org/screens/nutritional_analysis.dart';
 
 class FoodLog extends StatefulWidget {
+  final meal;
+
+  FoodLog([this.meal]);
+
   @override
   _FoodLogState createState() => _FoodLogState();
 }
@@ -166,7 +170,7 @@ class _FoodLogState extends State<FoodLog> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => NutritionAnalysisPage(
-                              foodEaten, _dateTime.toString())),
+                              foodEaten, _dateTime, widget.meal)),
                     ),
                     child: Text(
                       'NEXT',

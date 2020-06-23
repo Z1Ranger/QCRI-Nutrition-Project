@@ -25,6 +25,18 @@ class _MealLogState extends State<MealLog> {
     }
   }
 
+  String getMeal(meal) {
+    if (meal == Meal.breakfast) {
+      return 'breakfast';
+    } else if (meal == Meal.lunch) {
+      return 'lunch';
+    } else if (meal == Meal.dinner) {
+      return 'dinner';
+    } else {
+      return 'snack';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -148,7 +160,8 @@ class _MealLogState extends State<MealLog> {
             child: FlatButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FoodLog()),
+                MaterialPageRoute(
+                    builder: (context) => FoodLog(getMeal(selectedMeal))),
               ),
               child: Text(
                 'NEXT',

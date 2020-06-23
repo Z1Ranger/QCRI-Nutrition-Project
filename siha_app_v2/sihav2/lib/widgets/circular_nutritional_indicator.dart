@@ -4,8 +4,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 class CircularNutritionIndicator extends StatelessWidget {
   final color;
   final nutrition;
+  final text;
 
-  CircularNutritionIndicator({this.color, this.nutrition});
+  CircularNutritionIndicator({this.color, this.nutrition, this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class CircularNutritionIndicator extends StatelessWidget {
           radius: 60.0,
           lineWidth: 5.0,
           percent: 1.0,
-          center: new Text("0"),
+          center: new Text(text),
           progressColor: color,
         ),
         Padding(

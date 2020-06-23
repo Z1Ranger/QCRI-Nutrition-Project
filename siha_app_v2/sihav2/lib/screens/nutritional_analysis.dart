@@ -8,8 +8,9 @@ import 'package:org/screens/food_logging_overview.dart';
 class NutritionAnalysisPage extends StatefulWidget {
   final foodEaten;
   final date;
+  final meal;
 
-  NutritionAnalysisPage([this.foodEaten, this.date]);
+  NutritionAnalysisPage([this.foodEaten, this.date, this.meal]);
 
   @override
   _NutritionAnalysisPageState createState() => _NutritionAnalysisPageState();
@@ -26,12 +27,11 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
       headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjI4OTEzMCwiZXhwIjoxNTkyODkzOTMwfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.Lisr-OYxbr8o71sIHPZkRyD_yRTqV5it0j0uy2KOJ6Pl-74Wircy0k56ciundmFjff9YVQQMiUgxvdC8N0OLow'
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
       },
     );
     if (response.statusCode == 200) {
       data = jsonDecode(response.body);
-      print(data);
 
       setState(() {
         isLoading = false;
@@ -42,23 +42,65 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
     }
   }
 
-  setData() async {
+  setFoodTextData() async {
+    print(widget.date);
+    print(widget.foodEaten);
+    print(widget.meal);
+    String date = widget.date.year.toString() +
+        '-' +
+        widget.date.month.toString() +
+        '-' +
+        widget.date.day.toString();
     http.Response response = await http.post(
-      Uri.encodeFull('http://z1ranger.pythonanywhere.com/food'),
+      Uri.encodeFull('https://siha-staging.qcri.org/siha-api/v1/food_logging'),
       body: jsonEncode({
-        'date': '${widget.date}',
-        'tot_cals': '${data['tot_cals']}',
-        'tot_fats': '${data['tot_fats']}',
-        'tot_proteins': '${data['tot_proteins']}',
-        'tot_cabs': '${data['tot_cabs']}'
+        'datetime': date,
+        'patient': 1,
+        'food_text': widget.foodEaten,
+        'meal': widget.meal
       }),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
+      },
+    );
+    if (response.statusCode == 200) {
+      print(jsonDecode(response.body));
+      return jsonDecode(response.body);
+    } else {
+      print(response.statusCode);
+    }
+  }
+
+  setNutritionalData(int foodId) async {
+    http.Response response = await http.post(
+      Uri.encodeFull('https://siha-staging.qcri.org/siha-api/v1/nutrients'),
+      body: jsonEncode({
+        'food_log_id': foodId,
+        'cals': data['total_nutrients']['cals'],
+        'fats': data['total_nutrients']['fats'],
+        'proteins': data['total_nutrients']['proteins'],
+        'carbs': data['total_nutrients']['carbs']
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
+      },
     );
     if (response.statusCode == 200) {
       return 'success - sending food';
     } else {
       print(response.statusCode);
     }
+  }
+
+  setData() async {
+    dynamic result = await setFoodTextData();
+    print(result);
+    print(result['id'] is int);
+    setNutritionalData(result['id']);
   }
 
   @override
