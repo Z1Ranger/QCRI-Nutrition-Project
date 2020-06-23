@@ -4,7 +4,7 @@ SIHA
 
 ### ABOUT
 
-This is the latest version - v2, of the app.
+This is version 2 of SIHA app, look at siha_app_v3 for latest updates.
 
 ### DESIGN
 
