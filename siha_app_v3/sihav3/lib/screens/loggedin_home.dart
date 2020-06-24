@@ -3,6 +3,7 @@ import 'package:org/constants.dart';
 import 'package:org/screens/coming_soon.dart';
 import 'package:org/screens/discover.dart';
 import 'package:org/screens/food_logging_overview.dart';
+import 'package:org/widgets/functionality_card.dart';
 import 'package:org/widgets/functionality_widget.dart';
 import 'package:org/screens/user_page.dart';
 
@@ -33,56 +34,44 @@ class LoggedInHome extends StatelessWidget {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 55, horizontal: 35),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: kMainTheme),
-              child: FlatButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FoodLoggingOverview()),
-                ),
-                child: FunctionalityWidget(
-                  icon: Icons.fastfood,
-                  text: 'LOG FOOD  & MONITOR CALORIES',
-                ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: FunctionalityCard(
+              icon: Icons.local_dining,
+              color: kMainTheme,
+              text: 'Track Food',
+              subtext: 'Log Food & Monitor Calories',
+              view: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FoodLoggingOverview()),
               ),
             ),
           ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 55, horizontal: 35),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: kMainTheme),
-              child: FlatButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DiscoverPage()),
-                ),
-                child: FunctionalityWidget(
-                  icon: Icons.fastfood,
-                  text: 'GET LIFESTYLE RECOMMENDATIONS',
-                ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: FunctionalityCard(
+              color: kMainTheme,
+              icon: Icons.speaker_notes,
+              text: 'Lifestyle Recommendations',
+              subtext: 'Get Lifestyle Recommendations from experts',
+              view: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DiscoverPage()),
               ),
             ),
           ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 55, horizontal: 35),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15), color: kMainTheme),
-              child: FlatButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ComingSoon()),
-                ),
-                child: FunctionalityWidget(
-                  icon: Icons.fastfood,
-                  text: 'MONITOR ALL ACTIVITY DEVICES IN ONE PLACE',
-                ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: FunctionalityCard(
+              icon: Icons.insert_chart,
+              color: kMainTheme,
+              text: 'Monitor Activity',
+              subtext: 'Monitor all the activity in one place',
+              view: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ComingSoon()),
               ),
             ),
           ),

@@ -63,8 +63,11 @@ class UserPage extends StatelessWidget {
                       color: Colors.white,
                       size: 100,
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
-                      'First Name',
+                      'Name',
                       style: TextStyle(
                         fontFamily: 'San',
                         fontSize: 20,

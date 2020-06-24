@@ -122,7 +122,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
             children: <Widget>[
               IconButton(
                 icon: Icon(
-                  Icons.room_service,
+                  Icons.history,
                   size: 30,
                   color: Colors.white,
                 ),
@@ -135,7 +135,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.explore,
+                  Icons.local_library,
                   size: 30,
                   color: Colors.white,
                 ),
@@ -231,85 +231,6 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                   ),
                 ),
               ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 10),
-            color: kDimPink,
-            child: Text(
-              'OVERVIEW',
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 10, left: 50, right: 50),
-            color: kDimPink,
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _isLoading
-                        ? Text(
-                            "0",
-                            style: TextStyle(fontSize: 30),
-                          )
-                        : Text(
-                            cals.toString(),
-                            style: TextStyle(fontSize: 30),
-                          ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Icon(
-                      Icons.whatshot,
-                      size: 30,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-              height: 165,
-              width: 165,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'images/wheel.PNG',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: 150,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                CircularNutritionIndicator(
-                  color: Colors.green,
-                  nutrition: 'FATS',
-                  text: _isLoading ? "0" : fats.toString(),
-                ),
-                CircularNutritionIndicator(
-                  color: Colors.blue,
-                  nutrition: 'PROTEINS',
-                  text: _isLoading ? "0" : proteins.toString(),
-                ),
-                CircularNutritionIndicator(
-                  color: Colors.red,
-                  nutrition: 'CARBS',
-                  text: _isLoading ? "0" : carbs.toString(),
-                ),
-              ],
-            ),
-            decoration: BoxDecoration(
-              color: kDimPink,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(75),
-                bottomRight: Radius.circular(75),
-              ),
             ),
           ),
           ListView(
