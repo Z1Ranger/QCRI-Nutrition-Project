@@ -124,7 +124,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
             children: <Widget>[
               IconButton(
                 icon: Icon(
-                  Icons.history,
+                  Icons.favorite_border,
                   size: 30,
                   color: Colors.white,
                 ),
