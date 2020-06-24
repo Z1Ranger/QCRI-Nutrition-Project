@@ -5,6 +5,10 @@ import 'package:org/screens/food_log.dart';
 import 'package:org/widgets/meal_widget.dart';
 
 class MealLog extends StatefulWidget {
+  final date;
+
+  MealLog([this.date]);
+
   @override
   _MealLogState createState() => _MealLogState();
 }
@@ -142,7 +146,8 @@ class _MealLogState extends State<MealLog> {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => FoodLog(getMeal(selectedMeal))),
+                    builder: (context) =>
+                        FoodLog(getMeal(selectedMeal), widget.date)),
               ),
               child: Text(
                 'NEXT',

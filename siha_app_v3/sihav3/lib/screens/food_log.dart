@@ -1,29 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:org/constants.dart';
 import 'package:org/screens/nutritional_analysis.dart';
 
 class FoodLog extends StatefulWidget {
   final meal;
+  final date;
 
-  FoodLog([this.meal]);
+  FoodLog([this.meal, this.date]);
 
   @override
   _FoodLogState createState() => _FoodLogState();
 }
 
 class _FoodLogState extends State<FoodLog> {
-  DateTime _dateTime = DateTime.now();
   String foodEaten;
-
-  bool checkToday(DateTime date) {
-    if (date.year == DateTime.now().year &&
-        date.month == DateTime.now().month &&
-        date.day == DateTime.now().day) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  TimeOfDay _timeOfDay = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -40,86 +32,78 @@ class _FoodLogState extends State<FoodLog> {
       body: Column(
         children: <Widget>[
           Container(
-            color: Colors.white,
-            height: 50,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                GestureDetector(
-                  child: Icon(
-                    Icons.chevron_left,
-                    color: kMainTheme,
+                Expanded(
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          'Datetime: ',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: kMainTheme,
+                          ),
+                        ),
+                        Text(
+                          DateTime(
+                            widget.date.year,
+                            widget.date.month,
+                            widget.date.day,
+                            _timeOfDay.hour,
+                            _timeOfDay.minute,
+                          ).toString().split('.')[0],
+                          style:
+                              TextStyle(fontSize: 15, color: Color(0xff404040)),
+                        ),
+                      ],
+                    ),
                   ),
-                  onTap: () {
-                    setState(() {
-                      _dateTime = _dateTime.subtract(Duration(days: 1));
-                    });
-                  },
-                ),
-                SizedBox(
-                  width: 10,
                 ),
                 GestureDetector(
                   onTap: () {
-                    showDatePicker(
+                    showTimePicker(
                       context: context,
-                      initialDate: _dateTime,
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime(2100),
+                      initialTime: TimeOfDay(minute: 0, hour: 0),
                     ).then(
-                      (date) {
+                      (time) {
                         setState(
                           () {
-                            if (date != null) {
-                              _dateTime = date;
+                            if (time != null) {
+                              _timeOfDay = time;
                             }
                           },
                         );
                       },
                     );
                   },
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.calendar_today,
-                        color: kMainTheme,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      checkToday(_dateTime)
-                          ? Text(
-                              'Today',
-                              style: TextStyle(color: kMainTheme),
-                            )
-                          : Text(
-                              '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
-                              style: TextStyle(color: kMainTheme),
-                            ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _dateTime = _dateTime.add(Duration(days: 1));
-                    });
-                  },
-                  child: Icon(
-                    Icons.chevron_right,
-                    color: kMainTheme,
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        Icon(Icons.access_time),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Center(child: Text('Change Time', style: TextStyle()))
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   ),
                 ),
               ],
             ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            margin: EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 10),
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
           ),
-//          Container(
-//            color: Colors.white,
-//            height: 50,
-//          ),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -127,10 +111,10 @@ class _FoodLogState extends State<FoodLog> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    'WHAT DID YOU EAT?',
+                    'What did you eat for ${widget.meal}?',
                     style: TextStyle(
                         color: kMainTheme,
-                        fontSize: 20,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -138,18 +122,23 @@ class _FoodLogState extends State<FoodLog> {
                   children: <Widget>[
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 5),
                         child: TextField(
                           onChanged: (value) {
                             foodEaten = value;
                           },
-                          decoration: InputDecoration(
-                            fillColor: kDimText,
-                            filled: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter Food Consumed Here',
+                          style: TextStyle(
+                            color: Color(0xff404040),
                           ),
-                          autofocus: false,
+                          decoration: const InputDecoration(
+                              icon: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Enter food consumed',
+                              hintStyle: TextStyle(color: kMainTheme),
+                              labelText: 'Log Food',
+                              labelStyle: TextStyle(color: kMainTheme)),
                         ),
                       ),
                     ),
@@ -170,7 +159,15 @@ class _FoodLogState extends State<FoodLog> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => NutritionAnalysisPage(
-                              foodEaten, _dateTime, widget.meal)),
+                              foodEaten,
+                              DateTime(
+                                widget.date.year,
+                                widget.date.month,
+                                widget.date.day,
+                                _timeOfDay.hour,
+                                _timeOfDay.minute,
+                              ),
+                              widget.meal)),
                     ),
                     child: Text(
                       'NEXT',

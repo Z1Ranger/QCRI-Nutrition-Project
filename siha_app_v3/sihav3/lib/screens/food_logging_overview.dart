@@ -104,7 +104,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MealLog()),
+          MaterialPageRoute(builder: (context) => MealLog(_dateTime)),
         ),
         tooltip: 'Add food eaten for the day',
         child: Icon(
