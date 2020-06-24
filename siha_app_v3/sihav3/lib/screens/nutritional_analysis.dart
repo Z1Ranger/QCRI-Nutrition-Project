@@ -7,10 +7,10 @@ import 'package:org/screens/food_logging_overview.dart';
 
 class NutritionAnalysisPage extends StatefulWidget {
   final foodEaten;
-  final date;
+  final datetime;
   final meal;
 
-  NutritionAnalysisPage([this.foodEaten, this.date, this.meal]);
+  NutritionAnalysisPage([this.foodEaten, this.datetime, this.meal]);
 
   @override
   _NutritionAnalysisPageState createState() => _NutritionAnalysisPageState();
@@ -43,14 +43,14 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
   }
 
   setFoodTextData() async {
-    print(widget.date);
+    print(widget.datetime);
     print(widget.foodEaten);
     print(widget.meal);
-    String date = widget.date.year.toString() +
+    String date = widget.datetime.year.toString() +
         '-' +
-        widget.date.month.toString() +
+        widget.datetime.month.toString() +
         '-' +
-        widget.date.day.toString();
+        widget.datetime.day.toString();
     http.Response response = await http.post(
       Uri.encodeFull('https://siha-staging.qcri.org/siha-api/v1/food_logging'),
       body: jsonEncode({
@@ -122,12 +122,74 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
           centerTitle: true,
         ),
         body: Column(
-//          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Container(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'Datetime: ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: kMainTheme,
+                            ),
+                          ),
+                          Text(
+                            DateTime(
+                              widget.datetime.year,
+                              widget.datetime.month,
+                              widget.datetime.day,
+                              widget.datetime.hour,
+                              widget.datetime.minute,
+                            ).toString().split('.')[0],
+                            style: TextStyle(
+                                fontSize: 15, color: Color(0xff404040)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[
+                          Image.asset(
+                            'images/${widget.meal}-icon.png',
+                            height: 25,
+                            width: 25,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Center(child: Text(widget.meal, style: TextStyle()))
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    ),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 10),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            ),
             Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: kDimPink,
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25),
@@ -139,10 +201,6 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
                   InformationEntity('IMG'),
                   InformationEntity('FOOD'),
                   InformationEntity('QTY'),
-                  InformationEntity('CALORIES'),
-                  InformationEntity('CARBS'),
-                  InformationEntity('PROTEINS'),
-                  InformationEntity('FATS'),
                 ],
               ),
             ),
@@ -165,14 +223,6 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
                               ),
                               Text(data['foods'][index]['food'].toString()),
                               Text(data['foods'][index]['qty'].toString()),
-                              Text(data['foods'][index]['nutrients']['cals']
-                                  .toString()),
-                              Text(data['foods'][index]['nutrients']['carbs']
-                                  .toString()),
-                              Text(data['foods'][index]['nutrients']['proteins']
-                                  .toString()),
-                              Text(data['foods'][index]['nutrients']['fats']
-                                  .toString()),
                             ],
                           ),
                           margin: EdgeInsets.only(
@@ -226,7 +276,7 @@ class InformationEntity extends StatelessWidget {
       text,
       textAlign: TextAlign.center,
       style: TextStyle(
-          fontSize: 9, fontWeight: FontWeight.bold, color: kMainTheme),
+          fontSize: 12, fontWeight: FontWeight.bold, color: kMainTheme),
     );
   }
 }
