@@ -61,50 +61,40 @@ class _MealLogState extends State<MealLog> {
           Padding(
             padding: const EdgeInsets.only(bottom: 40.0),
             child: Text(
-              'SELECT MEAL',
+              'Select Meal',
               style: TextStyle(
-                  color: kMainTheme, fontSize: 20, fontWeight: FontWeight.bold),
+                  color: kMainTheme, fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedMeal = Meal.breakfast;
+                  });
+                },
+                child: MealWidget(
                   color: selectedMeal == Meal.breakfast
-                      ? kDimPink
-                      : Colors.white10,
-                ),
-                child: FlatButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedMeal = Meal.breakfast;
-                    });
-                  },
-                  child: MealWidget(
-                    meal: 'BREAKFAST',
-                    image: 'images/breakfast.png',
-                  ),
+                      ? Colors.grey[200]
+                      : Colors.white,
+                  meal: 'Breakfast',
+                  image: 'images/breakfast-icon.png',
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: selectedMeal == Meal.lunch ? kDimPink : Colors.white10,
-                ),
-                child: FlatButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedMeal = Meal.lunch;
-                    });
-                  },
-                  child: MealWidget(
-                    meal: 'LUNCH',
-                    image: 'images/lunch.png',
-                  ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedMeal = Meal.lunch;
+                  });
+                },
+                child: MealWidget(
+                  color: selectedMeal == Meal.lunch
+                      ? Colors.grey[200]
+                      : Colors.white,
+                  meal: 'Lunch',
+                  image: 'images/lunch-icon.png',
                 ),
               )
             ],
@@ -112,41 +102,32 @@ class _MealLogState extends State<MealLog> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color:
-                      selectedMeal == Meal.dinner ? kDimPink : Colors.white10,
-                ),
-                child: FlatButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedMeal = Meal.dinner;
-                    });
-                  },
-                  child: MealWidget(
-                    meal: 'DINNER',
-                    image: 'images/dinner.png',
-                  ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedMeal = Meal.dinner;
+                  });
+                },
+                child: MealWidget(
+                  color: selectedMeal == Meal.dinner
+                      ? Colors.grey[200]
+                      : Colors.white,
+                  meal: 'Dinner',
+                  image: 'images/dinner-icon.png',
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: selectedMeal == Meal.snack ? kDimPink : Colors.white10,
-                ),
-                child: FlatButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedMeal = Meal.snack;
-                    });
-                  },
-                  child: MealWidget(
-                    meal: 'SNACK',
-                    image: 'images/snack.png',
-                  ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedMeal = Meal.snack;
+                  });
+                },
+                child: MealWidget(
+                  color: selectedMeal == Meal.snack
+                      ? Colors.grey[200]
+                      : Colors.white,
+                  meal: 'Snack',
+                  image: 'images/snack-icon.png',
                 ),
               )
             ],
