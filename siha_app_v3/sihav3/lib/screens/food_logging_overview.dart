@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:org/screens/meal_log.dart';
+import 'package:org/widgets/meal_widget.dart';
 import 'user_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:org/constants.dart';
+import 'package:org/widgets/nutrition_card.dart';
 import 'package:org/widgets/circular_nutritional_indicator.dart';
 import 'discover.dart';
+import 'package:org/widgets/meal_card.dart';
 
-bool experiencedUser = false;
 DateTime _dateTime = DateTime.now();
 
 class FoodLoggingOverview extends StatefulWidget {
@@ -233,38 +235,65 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
               ],
             ),
           ),
-          ListView(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
+          Row(
             children: <Widget>[
-              !experiencedUser
-                  ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      margin: EdgeInsets.fromLTRB(40, 20, 40, 20),
-                      child: FlatButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('Get Started'),
-                              Icon(Icons.arrow_right)
-                            ],
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              experiencedUser = true;
-                            });
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MealLog(),
-                                ));
-                          }),
-                    )
-                  : SizedBox(),
+              Expanded(
+                child: NutritionCard(
+                  image: 'images/cal.png',
+                  color: kMainTheme,
+                  value: cals.toString(),
+                  description: "Calories",
+                ),
+              ),
+              Expanded(
+                child: NutritionCard(
+                  image: 'images/rice-bowl.png',
+                  color: kMainTheme,
+                  value: carbs.toString(),
+                  description: "Carbs",
+                ),
+              ),
+              Expanded(
+                child: NutritionCard(
+                  image: 'images/bean.png',
+                  color: kMainTheme,
+                  value: proteins.toString(),
+                  description: "Proteins",
+                ),
+              ),
+              Expanded(
+                child: NutritionCard(
+                  image: 'images/burger.png',
+                  color: kMainTheme,
+                  value: fats.toString(),
+                  description: "Fats",
+                ),
+              ),
             ],
+          ),
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: <Widget>[
+                MealCard(
+                  meal: 'Breakfast',
+                  amount: '0',
+                ),
+                MealCard(
+                  meal: 'Lunch',
+                  amount: '0',
+                ),
+                MealCard(
+                  meal: 'Dinner',
+                  amount: '0',
+                ),
+                MealCard(
+                  meal: 'Snack',
+                  amount: '0',
+                ),
+              ],
+            ),
           ),
         ],
       ),

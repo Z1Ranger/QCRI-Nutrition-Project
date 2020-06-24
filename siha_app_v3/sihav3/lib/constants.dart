@@ -35,3 +35,11 @@ const List<String> months = [
 ];
 
 enum Meal { breakfast, lunch, dinner, snack }
+
+const divider = const Divider(
+  color: Colors.grey,
+  height: 0,
+  thickness: 1,
+  indent: 20,
+  endIndent: 20,
+);
