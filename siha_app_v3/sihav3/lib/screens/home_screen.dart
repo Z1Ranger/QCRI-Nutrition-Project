@@ -25,11 +25,11 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             FunctionalityWidget(
-              icon: Icons.fastfood,
+              icon: Icons.local_dining,
               text: 'Log Food  & Monitor Nutrition',
             ),
             FunctionalityWidget(
-              icon: Icons.fitness_center,
+              icon: Icons.speaker_notes,
               text: 'Get Lifestyle Recommendations',
             ),
             FunctionalityWidget(

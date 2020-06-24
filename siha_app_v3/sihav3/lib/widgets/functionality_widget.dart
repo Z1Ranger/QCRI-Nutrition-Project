@@ -11,7 +11,7 @@ class FunctionalityWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 25.0,
+        vertical: 20.0,
         horizontal: 30,
       ),
       child: Row(
