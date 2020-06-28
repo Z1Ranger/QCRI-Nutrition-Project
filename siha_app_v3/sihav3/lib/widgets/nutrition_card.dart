@@ -22,7 +22,7 @@ class NutritionCard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               value,
-              style: TextStyle(fontSize: 40, color: color),
+              style: TextStyle(fontSize: 38, color: color),
             ),
           ),
           Text(

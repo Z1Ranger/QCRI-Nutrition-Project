@@ -45,7 +45,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
     print(date);
     http.Response response = await http.get(
       Uri.encodeFull(
-          'https://siha-staging.qcri.org/siha-api/v1/nutrients/$date/1'),
+          'https://siha-staging.qcri.org/siha-api/v1/nutrients/date/$date/patient/1'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization':
@@ -55,10 +55,10 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
     if (response.statusCode == 200) {
       dynamic data = jsonDecode(response.body);
       print(data);
-      carbs = data["total_carbs"];
-      cals = data["total_cals"];
-      fats = data["total_fats"];
-      proteins = data["total_proteins"];
+      cals = data["total_nutrients"]["cals"];
+      carbs = data["total_nutrients"]["carbs"];
+      proteins = data["total_nutrients"]["proteins"];
+      fats = data["total_nutrients"]["fats"];
       setState(() {
         _isLoading = false;
       });
@@ -211,7 +211,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                               style: TextStyle(color: kMainTheme),
                             )
                           : Text(
-                              '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]}',
+                              '${weekdays[_dateTime.weekday % 7]}, ${_dateTime.day} ${months[_dateTime.month - 1]} \'${_dateTime.year.toString().substring(2)}',
                               style: TextStyle(color: kMainTheme),
                             ),
                     ],
@@ -239,7 +239,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
             children: <Widget>[
               Expanded(
                 child: NutritionCard(
-                  image: 'images/cal.png',
+                  image: 'images/cal2.png',
                   color: kMainTheme,
                   value: cals.toString(),
                   description: "Calories",
@@ -247,7 +247,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
               ),
               Expanded(
                 child: NutritionCard(
-                  image: 'images/rice-bowl.png',
+                  image: 'images/rice-bowl2.png',
                   color: kMainTheme,
                   value: carbs.toString(),
                   description: "Carbs",
@@ -255,7 +255,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
               ),
               Expanded(
                 child: NutritionCard(
-                  image: 'images/bean.png',
+                  image: 'images/protein2.png',
                   color: kMainTheme,
                   value: proteins.toString(),
                   description: "Proteins",
@@ -263,7 +263,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
               ),
               Expanded(
                 child: NutritionCard(
-                  image: 'images/burger.png',
+                  image: 'images/burger2.png',
                   color: kMainTheme,
                   value: fats.toString(),
                   description: "Fats",

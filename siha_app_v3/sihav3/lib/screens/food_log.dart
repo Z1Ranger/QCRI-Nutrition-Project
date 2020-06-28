@@ -15,7 +15,36 @@ class FoodLog extends StatefulWidget {
 
 class _FoodLogState extends State<FoodLog> {
   String foodEaten;
+  DateTime _date;
   TimeOfDay _timeOfDay = TimeOfDay.now();
+
+  setDate() {
+    _date = widget.date;
+  }
+
+  bool checkToday(DateTime date) {
+    if (date.year == DateTime.now().year &&
+        date.month == DateTime.now().month &&
+        date.day == DateTime.now().day) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  String formattedTime(TimeOfDay time) {
+    if (0 < time.hour && time.hour < 12) {
+      return '${time.hour}:${time.minute} AM';
+    } else {
+      return '${time.hour % 12}:${time.minute} PM';
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setDate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,78 +60,97 @@ class _FoodLogState extends State<FoodLog> {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          'Datetime: ',
+          GestureDetector(
+            onTap: () {
+              showDatePicker(
+                context: context,
+                initialDate: _date,
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2100),
+              ).then(
+                (date) {
+                  setState(
+                    () {
+                      if (date != null) {
+                        _date = date;
+                      }
+                    },
+                  );
+                },
+              );
+            },
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.calendar_today,
+                    color: kMainTheme,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  checkToday(_date)
+                      ? Text(
+                          'Today',
+                          style: TextStyle(color: kMainTheme),
+                        )
+                      : Text(
+                          '${weekdays[_date.weekday % 7]}, ${_date.day} ${months[_date.month - 1]} \'${_date.year.toString().substring(2)}',
                           style: TextStyle(
-                            fontSize: 18,
                             color: kMainTheme,
+                            fontSize: 16,
                           ),
                         ),
-                        Text(
-                          DateTime(
-                            widget.date.year,
-                            widget.date.month,
-                            widget.date.day,
-                            _timeOfDay.hour,
-                            _timeOfDay.minute,
-                          ).toString().split('.')[0],
-                          style:
-                              TextStyle(fontSize: 15, color: Color(0xff404040)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay(minute: 0, hour: 0),
-                    ).then(
-                      (time) {
-                        setState(
-                          () {
-                            if (time != null) {
-                              _timeOfDay = time;
-                            }
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Icon(Icons.access_time),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Center(child: Text('Change Time', style: TextStyle()))
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  ),
-                ),
-              ],
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
+          ),
+          GestureDetector(
+            onTap: () {
+              showTimePicker(
+                context: context,
+                initialTime: TimeOfDay(minute: 0, hour: 0),
+              ).then(
+                (time) {
+                  setState(
+                    () {
+                      if (time != null) {
+                        _timeOfDay = time;
+                      }
+                    },
+                  );
+                },
+              );
+            },
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.access_time),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Center(
+                      child: Text(formattedTime(_timeOfDay),
+                          style: TextStyle(
+                            fontSize: 16,
+                          )))
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(15),
+              ),
+              margin: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
-            margin: EdgeInsets.only(top: 15, left: 10, right: 10, bottom: 10),
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
           ),
           Expanded(
             child: Column(
@@ -137,7 +185,7 @@ class _FoodLogState extends State<FoodLog> {
                               ),
                               hintText: 'Enter food consumed',
                               hintStyle: TextStyle(color: kMainTheme),
-                              labelText: 'Log Food',
+                              labelText: 'Enter Food',
                               labelStyle: TextStyle(color: kMainTheme)),
                         ),
                       ),

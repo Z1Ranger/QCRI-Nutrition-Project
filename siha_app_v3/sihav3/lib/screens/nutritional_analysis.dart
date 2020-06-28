@@ -42,6 +42,14 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
     }
   }
 
+  String formattedTime(time) {
+    if (0 < time.hour && time.hour < 12) {
+      return '${time.hour}:${time.minute} AM';
+    } else {
+      return '${time.hour % 12}:${time.minute} PM';
+    }
+  }
+
   setFoodTextData() async {
     print(widget.datetime);
     print(widget.foodEaten);
@@ -125,57 +133,65 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
           children: <Widget>[
             Container(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Text(
-                            'Datetime: ',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: kMainTheme,
-                            ),
-                          ),
-                          Text(
-                            DateTime(
-                              widget.datetime.year,
-                              widget.datetime.month,
-                              widget.datetime.day,
-                              widget.datetime.hour,
-                              widget.datetime.minute,
-                            ).toString().split('.')[0],
-                            style: TextStyle(
-                                fontSize: 15, color: Color(0xff404040)),
-                          ),
-                        ],
-                      ),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Icon(
+                          Icons.calendar_today,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          '${weekdays[widget.datetime.weekday % 7]}, ${widget.datetime.day} ${months[widget.datetime.month - 1]} \'${widget.datetime.year.toString().substring(2)}',
+                        ),
+                      ],
                     ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      child: Column(
-                        children: <Widget>[
-                          Image.asset(
-                            'images/${widget.meal}-icon.png',
-                            height: 25,
-                            width: 25,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Center(child: Text(widget.meal, style: TextStyle()))
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Icon(Icons.access_time),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          formattedTime(widget.datetime),
+                        ),
+                      ],
                     ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  ),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset(
+                          'images/${widget.meal}-icon.png',
+                          height: 25,
+                          width: 25,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Center(child: Text(widget.meal, style: TextStyle()))
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   ),
                 ],
               ),
@@ -187,22 +203,15 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             ),
             Container(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.grey[100],
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  InformationEntity('IMG'),
-                  InformationEntity('FOOD'),
-                  InformationEntity('QTY'),
-                ],
-              ),
+              child: Text('Food Entry Results: '),
             ),
             !isLoading
                 ? Expanded(
@@ -222,9 +231,9 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
                                 height: 50,
                               ),
                               Text(data['foods'][index]['food'].toString()),
-                              Text(data['foods'][index]['qty'].toString()),
                             ],
                           ),
+                          padding: EdgeInsets.all(5),
                           margin: EdgeInsets.only(
                               top: 10, bottom: 5, left: 10, right: 10),
                           decoration: BoxDecoration(
