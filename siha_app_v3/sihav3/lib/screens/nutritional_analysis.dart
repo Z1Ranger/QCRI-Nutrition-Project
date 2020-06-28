@@ -74,22 +74,23 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
       return jsonDecode(response.body);
     } else {
       print(response.statusCode);
     }
   }
 
-  setNutritionalData(int foodId) async {
+  setNutritionalData(foodId, food, cals, carbs, proteins, fats) async {
     http.Response response = await http.post(
       Uri.encodeFull('https://siha-staging.qcri.org/siha-api/v1/nutrients'),
       body: jsonEncode({
         'food_log_id': foodId,
-        'cals': data['total_nutrients']['cals'],
-        'fats': data['total_nutrients']['fats'],
-        'proteins': data['total_nutrients']['proteins'],
-        'carbs': data['total_nutrients']['carbs']
+        'food_item': {
+          'cals': cals,
+          'carbs': carbs,
+          'proteins': proteins,
+          'fats': fats
+        }
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -107,14 +108,23 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
   setData() async {
     dynamic result = await setFoodTextData();
     print(result);
+    print(data);
     print(result['id'] is int);
-    setNutritionalData(result['id']);
+    for (int i = 0; i < data['foods'].length; i++) {
+      await setNutritionalData(
+          result['id'],
+          data['foods'][i]['food'],
+          data['foods'][i]['nutrients']['cals'],
+          data['foods'][i]['nutrients']['carbs'],
+          data['foods'][i]['nutrients']['proteins'],
+          data['foods'][i]['nutrients']['fats']);
+    }
   }
 
   @override
   void initState() {
-    getData();
     super.initState();
+    getData();
   }
 
   @override
@@ -255,8 +265,8 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
               ),
               margin: EdgeInsets.symmetric(vertical: 20, horizontal: 35),
               child: FlatButton(
-                onPressed: () {
-                  setData();
+                onPressed: () async {
+                  await setData();
                   Navigator.push(
                     context,
                     MaterialPageRoute(

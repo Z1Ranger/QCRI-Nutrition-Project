@@ -10,6 +10,7 @@ import 'package:org/widgets/nutrition_card.dart';
 import 'package:org/widgets/circular_nutritional_indicator.dart';
 import 'discover.dart';
 import 'package:org/widgets/meal_card.dart';
+import 'package:org/screens/food_log.dart';
 
 DateTime _dateTime = DateTime.now();
 
@@ -70,7 +71,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
   @override
   void initState() {
     super.initState();
-//    getData();
+    getData();
   }
 
   @override
@@ -279,18 +280,38 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                 MealCard(
                   meal: 'Breakfast',
                   amount: '0',
+                  navigate: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FoodLog('breakfast', _dateTime)),
+                  ),
                 ),
                 MealCard(
                   meal: 'Lunch',
                   amount: '0',
+                  navigate: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FoodLog('lunch', _dateTime)),
+                  ),
                 ),
                 MealCard(
                   meal: 'Dinner',
                   amount: '0',
+                  navigate: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FoodLog('dinner', _dateTime)),
+                  ),
                 ),
                 MealCard(
                   meal: 'Snack',
                   amount: '0',
+                  navigate: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FoodLog('snack', _dateTime)),
+                  ),
                 ),
               ],
             ),
