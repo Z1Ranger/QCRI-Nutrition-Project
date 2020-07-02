@@ -25,6 +25,20 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
   int fats = 0;
   int proteins = 0;
 
+  dynamic mealNutrients = {
+    'breakfast': {'cals': 0},
+    'lunch': {'cals': 0},
+    'dinner': {'cals': 0},
+    'snack': {'cals': 0}
+  };
+
+  dynamic foodInformation = {
+    'breakfast': [],
+    'lunch': [],
+    'dinner': [],
+    'snack': []
+  };
+
   bool _isLoading = true;
 
   bool checkToday(DateTime date) {
@@ -50,7 +64,7 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
       headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
       },
     );
     if (response.statusCode == 200) {
@@ -68,10 +82,130 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
     }
   }
 
+  getBreakfastData() async {
+    String date = _dateTime.year.toString() +
+        '-' +
+        _dateTime.month.toString() +
+        '-' +
+        _dateTime.day.toString();
+    http.Response responseBreakfast = await http.get(
+      Uri.encodeFull(
+          'https://siha-staging.qcri.org/siha-api/v1/nutrients/date/$date/patient/1/meal/breakfast'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
+      },
+    );
+    if (responseBreakfast.statusCode == 200) {
+      print(jsonDecode(responseBreakfast.body));
+      setState(() {
+        mealNutrients['breakfast']['cals'] =
+            jsonDecode(responseBreakfast.body)['total_meal_nutrients']['cals'];
+        foodInformation['breakfast'] =
+            jsonDecode(responseBreakfast.body)['food_items'];
+      });
+    } else {
+      print(responseBreakfast.statusCode);
+    }
+  }
+
+  getLunchData() async {
+    String date = _dateTime.year.toString() +
+        '-' +
+        _dateTime.month.toString() +
+        '-' +
+        _dateTime.day.toString();
+
+    http.Response responseLunch = await http.get(
+      Uri.encodeFull(
+          'https://siha-staging.qcri.org/siha-api/v1/nutrients/date/$date/patient/1/meal/lunch'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
+      },
+    );
+
+    if (responseLunch.statusCode == 200) {
+      print(jsonDecode(responseLunch.body));
+      setState(() {
+        mealNutrients['lunch']['cals'] =
+            jsonDecode(responseLunch.body)['total_meal_nutrients']['cals'];
+        foodInformation['lunch'] = jsonDecode(responseLunch.body)['food_items'];
+      });
+    } else {
+      print(responseLunch.statusCode);
+    }
+  }
+
+  getDinnerData() async {
+    String date = _dateTime.year.toString() +
+        '-' +
+        _dateTime.month.toString() +
+        '-' +
+        _dateTime.day.toString();
+
+    http.Response responseDinner = await http.get(
+      Uri.encodeFull(
+          'https://siha-staging.qcri.org/siha-api/v1/nutrients/date/$date/patient/1/meal/dinner'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
+      },
+    );
+
+    if (responseDinner.statusCode == 200) {
+      print(jsonDecode(responseDinner.body));
+      setState(() {
+        mealNutrients['dinner']['cals'] =
+            jsonDecode(responseDinner.body)['total_meal_nutrients']['cals'];
+        foodInformation['dinner'] =
+            jsonDecode(responseDinner.body)['food_items'];
+      });
+    } else {
+      print(responseDinner.statusCode);
+    }
+  }
+
+  getSnackData() async {
+    String date = _dateTime.year.toString() +
+        '-' +
+        _dateTime.month.toString() +
+        '-' +
+        _dateTime.day.toString();
+
+    http.Response responseSnack = await http.get(
+      Uri.encodeFull(
+          'https://siha-staging.qcri.org/siha-api/v1/nutrients/date/$date/patient/1/meal/snack'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
+      },
+    );
+
+    if (responseSnack.statusCode == 200) {
+      print(jsonDecode(responseSnack.body));
+      setState(() {
+        mealNutrients['snack']['cals'] =
+            jsonDecode(responseSnack.body)['total_meal_nutrients']['cals'];
+        foodInformation['snack'] = jsonDecode(responseSnack.body)['food_items'];
+      });
+    } else {
+      print(responseSnack.statusCode);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getData();
+    getBreakfastData();
+    getLunchData();
+    getSnackData();
+    getDinnerData();
   }
 
   @override
@@ -171,6 +305,10 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                     setState(() {
                       _dateTime = _dateTime.subtract(Duration(days: 1));
                       getData();
+                      getBreakfastData();
+                      getLunchData();
+                      getSnackData();
+                      getDinnerData();
                     });
                   },
                 ),
@@ -191,6 +329,10 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                             if (date != null) {
                               _dateTime = date;
                               getData();
+                              getBreakfastData();
+                              getLunchData();
+                              getSnackData();
+                              getDinnerData();
                             }
                           },
                         );
@@ -226,6 +368,10 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                     setState(() {
                       _dateTime = _dateTime.add(Duration(days: 1));
                       getData();
+                      getBreakfastData();
+                      getLunchData();
+                      getSnackData();
+                      getDinnerData();
                     });
                   },
                   child: Icon(
@@ -279,7 +425,8 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
               children: <Widget>[
                 MealCard(
                   meal: 'Breakfast',
-                  amount: '0',
+                  data: foodInformation['breakfast'],
+                  amount: mealNutrients['breakfast']['cals'].toString(),
                   navigate: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -288,7 +435,8 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                 ),
                 MealCard(
                   meal: 'Lunch',
-                  amount: '0',
+                  data: foodInformation['lunch'],
+                  amount: mealNutrients['lunch']['cals'].toString(),
                   navigate: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -297,7 +445,8 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                 ),
                 MealCard(
                   meal: 'Dinner',
-                  amount: '0',
+                  data: foodInformation['dinner'],
+                  amount: mealNutrients['dinner']['cals'].toString(),
                   navigate: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -306,7 +455,8 @@ class _FoodLoggingOverviewState extends State<FoodLoggingOverview> {
                 ),
                 MealCard(
                   meal: 'Snack',
-                  amount: '0',
+                  data: foodInformation['snack'],
+                  amount: mealNutrients['snack']['cals'].toString(),
                   navigate: () => Navigator.push(
                     context,
                     MaterialPageRoute(

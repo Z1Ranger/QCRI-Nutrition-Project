@@ -27,7 +27,7 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
       headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
       },
     );
     if (response.statusCode == 200) {
@@ -70,7 +70,7 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
       headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
       },
     );
     if (response.statusCode == 200) {
@@ -86,6 +86,7 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
       body: jsonEncode({
         'food_log_id': foodId,
         'food_item': {
+          'food': food,
           'cals': cals,
           'carbs': carbs,
           'proteins': proteins,
@@ -95,7 +96,7 @@ class _NutritionAnalysisPageState extends State<NutritionAnalysisPage> {
       headers: {
         'Content-Type': 'application/json',
         'Authorization':
-            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MjkwODU3OSwiZXhwIjoxNTkzNTEzMzc5fQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.DiLJdDrc1YR-qZix_qwSjb8cPsTB7eeujTQa69IgYmNkFcqnniy_kiH9eJtwEUZ6_QnEelCIjoOZkn6_vmH5lQ'
+            'Bearer eyJhbGciOiJIUzUxMiIsImlhdCI6MTU5MzU4ODI2MiwiZXhwIjoxNTk0MTkzMDYyfQ.eyJpZCI6MSwidXNlcl90eXBlIjoiQXBpVXNlciJ9.tJf3Bb-6St2o_mcljTTEKSnTigttaMfLL5g9xOdFHkWf_QPYTKPfSTKRREWOIvE1eU7m0JcEsCf1E9eNeeIzUw'
       },
     );
     if (response.statusCode == 200) {
