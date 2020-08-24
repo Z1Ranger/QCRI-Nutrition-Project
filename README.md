@@ -7,3 +7,5 @@ This is a nutritional analysis project which involves a mobile application, whic
 ## v3 Demo
 
 <img src='https://media.giphy.com/media/ZaX9Eutm0t1xtp91uM/giphy.gif'>
+
+**Note:** Check here for full version of app demo: https://player.vimeo.com/video/451093300 
